@@ -2,6 +2,7 @@ package org.tek.microlab;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.tek.microlab.common.SignalFileBatchJobAdapter;
 import org.tek.microlab.dms.DmsPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -13,11 +14,16 @@ import java.util.Arrays;
 import java.util.Optional;
 
 @Slf4j
-@SpringBootApplication
+//@SpringBootApplication
+@SpringBootApplication(exclude = {
+        org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration.class
+})
 public class ThinMicroLabApplication extends SpringBootServletInitializer implements CommandLineRunner {
 
     @Autowired
     private DmsPort dmsPort;
+    @Autowired
+    private SignalFileBatchJobAdapter signalFileBatchJobAdapter;
 
     public static void main(String[] args) {
         boolean isBatch = Arrays.stream(args).anyMatch(arg -> arg.startsWith("BATCH-JOB"));
@@ -61,6 +67,10 @@ public class ThinMicroLabApplication extends SpringBootServletInitializer implem
                 log.info("----- Executing S3 File Process Batch Job -----");
                 runS3FileProcessJob();
                 break;
+            case Constants.BATCH_JOB_ID.SIGNALFILE:
+                log.info("----- Executing Signal File Process Batch Job -----");
+                runSignalFileJob();
+                break;
             default:
                 log.warn("Unrecognized batch job ID: {}. No action performed.", batchJobId);
                 break;
@@ -83,6 +93,12 @@ public class ThinMicroLabApplication extends SpringBootServletInitializer implem
         // For example:
         // s3ProcessorService.processFiles();
         log.info("S3 File Process Batch Job logic executed (placeholder).");
+    }
+
+    private void runSignalFileJob(){
+        log.info("Signal File Process Batch Job logic executed.");
+        signalFileBatchJobAdapter.GenerateSignalFile();
+        log.info("Generate Signal File Batch Job completed");
     }
 
 }

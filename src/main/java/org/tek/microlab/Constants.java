@@ -10,6 +10,7 @@ public final class Constants {
 	public static class BATCH_JOB_ID {
 		public static final String DMS = "DMS-BATCH";
 		public static final String S3PROCESS = "S3PROCESS-BATCH";
+		public static final String SIGNALFILE = "SIGNALFILE-BATCH";
 	}
 
 	public static class MARKET_DATA_REPORT_TYPE {

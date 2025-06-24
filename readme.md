@@ -24,5 +24,7 @@ mvn clean package
 ```
 ```
 java -jar target/ammo-dms-batch.jar
+java -jar target/ammo-dms-batch.jar BATCH-JOB=SIGNALFILE
+
 ```
 
